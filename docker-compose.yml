@@ -1,0 +1,46 @@
+version: "2.1"
+
+networks:
+  vpn
+services:
+  vpn:
+    image: agrol1/alpine-wireguard:latest
+    container_name: wireguard
+    cap_add:
+      - NET_ADMIN
+      - SYS_MODULE
+    networks:
+      - vpn
+    volumes:
+      - /your-place/wireguard:/etc/wireguard
+    ports:
+      - 51820:51820/udp
+      - 5000:5000
+    restart: unless-stopped
+  vpn-ui:
+    image: ngoduykhanh/wireguard-ui:latest
+    container_name: wg-ui
+    cap_add:
+      - NET_ADMIN
+    depends_on:
+      - vpn
+    network_mode: service:vpn
+    environment:
+      - SESSION_SECRET=Topsecret
+      - WGUI_USERNAME=MyUser
+      - WGUI_PASSWORD=MyPassword
+      - WGUI_MANAGE_START=false
+      - WGUI_MANAGE_RESTART=true
+      - WGUI_ENDPOINT_ADDRESS=my.domainvpn.com
+      - WGUI_DNS=1.1.1.1
+      - WGUI_PERSISTENT_KEEPALIVE=25
+      - WGUI_SERVER_INTERFACE_ADDRESSES=192.168.254.1/24 #IP Range off the wierguard network
+    logging:
+      driver: json-file
+      options:
+        max-size: 50m
+    volumes:
+      - /your-place/wg-ui:/app/db
+      - /your-place/wireguard:/etc/wireguard
+      - /etc/localtime:/etc/localtime:ro
+    restart: unless-stopped

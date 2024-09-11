@@ -1,5 +1,4 @@
-ARG ARCH=
-FROM ${ARCH}alpine:latest
+FROM alpine:latest
 LABEL maintainer "agrol1"
 RUN apk add -U --no-cache --update wireguard-tools
 RUN mkdir /util

@@ -4,7 +4,7 @@ networks:
   vpn
 services:
   vpn:
-    build: https://github.com/mycompany/webapp.git
+    build: https://github.com/agrol1/alpine-wireguard.git
     container_name: wireguard
     cap_add:
       - NET_ADMIN
@@ -18,7 +18,7 @@ services:
       - 5000:5000
     restart: unless-stopped
   vpn-ui:
-    image: ngoduykhanh/wireguard-ui:latest
+    build: https://github.com/ngoduykhanh/wireguard-ui.git
     container_name: wg-ui
     cap_add:
       - NET_ADMIN

@@ -4,7 +4,7 @@ networks:
   vpn
 services:
   vpn:
-    image: agrol1/alpine-wireguard:latest
+    build: https://github.com/mycompany/webapp.git
     container_name: wireguard
     cap_add:
       - NET_ADMIN
